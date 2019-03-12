@@ -15,6 +15,8 @@ namespace Class031119
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddMvc();
+            services.AddMvcCore().AddJsonFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,9 +27,24 @@ namespace Class031119
                 app.UseDeveloperExceptionPage();
             }
 
+            // Middleware for static files
+            //app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            // Default /(controller)/(action)
+            app.UseMvcWithDefaultRoute();
+
+            //app.UseMvc();
+
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                await context.Response.WriteAsync("No page found." + "\n");
+                await context.Response.WriteAsync("URL: " + context.Request.Path + "\n");
+                await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName + "\n");
+                //if (context.Request.Path == "/details")
+                //{
+                //    await context.Response.WriteAsync("Welcome to the details page." + "\n");
+                //}
             });
         }
     }
